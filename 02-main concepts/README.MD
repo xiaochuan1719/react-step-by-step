@@ -135,6 +135,24 @@ const element = <img src={user.avatarUrl}" />
 </div>
 ```
 
+> React 中的一个常见模式是一个组件返回多个元素。Fragments 允许你将子列表分组，而无需向 DOM 添加额外节点。
+
+> `<></>` 是 `<React.Fragment></React.Fragment>` 的 短语法；但不支持 key 或 属性
+
+```javascript
+<Fragment>
+    <h1>Hello, {formatName(user)}</h1>
+    <img src={user.avatarUrl} alt="avatar" />
+</Fragment>
+
+// 等效于
+
+<>
+    <h1>Hello, {formatName(user)}</h1>
+    <img src={user.avatarUrl} alt="avatar" />
+</>
+```
+
 ### JSX Prevents Injection Attacks
 
 可以安全地在 JSX 当中插入用户输入的内容：
@@ -176,4 +194,5 @@ const element = {
     }
 }
 ```
+
 

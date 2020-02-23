@@ -49,7 +49,7 @@
         ReactDOM.render(element, document.querySelector('#rootByReactCreateElement'))
 
 
-        // 复杂一点的
+        // 好吃的栗子
         function formatName(user) {
             return user.firstName + ' ' + user.lastName
         }
@@ -60,12 +60,14 @@
             avatarUrl: './8d81.jpg'
         }
 
-        const element2 = React.createElement("div", null, React.createElement("h1", null, "Hello, ", formatName(user)), React.createElement("img", {
-            src: user.avatarUrl,
-            alt: "avatar"
-        }));
-        
-        ReactDOM.render(element2, document.querySelector('#rootByHard'))
+        // const element2 = React.createElement(
+        //     "div", 
+        //     null, 
+        //     React.createElement("h1", null, "Hello, ", formatName(user)), 
+        //     React.createElement("img", {src: user.avatarUrl,alt: "avatar"})
+        // );
+
+        // ReactDOM.render(element2, document.querySelector('#rootByHard'))
     </script>
 
     <script type="text/babel">
@@ -74,6 +76,23 @@
             <h1 className="name-blue">Hello, Nicholas</h1>,
             document.querySelector('#rootByJSX')
         )
+
+        // 好吃的栗子
+        const element3 = (
+            <React.Fragment>
+                <h1>Hello, {formatName(user)}</h1>
+                <img src={user.avatarUrl} alt="avatar" />
+            </React.Fragment>
+
+            // <></> 是 <React.Fragment></React.Fragment> 的 短语法；但不支持 key 或 属性
+            // <>
+            //     <h1>Hello, {formatName(user)}</h1>
+            //     <img src={user.avatarUrl} alt="avatar" />
+            // </>
+        )
+
+        ReactDOM.render(element3, document.querySelector('#rootByHard'))
+
     </script>
 
 </body>
