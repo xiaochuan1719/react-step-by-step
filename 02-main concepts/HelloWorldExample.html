@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+        #app {
+            color: #61dafb;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <!-- 
+    <script crossorigin src="https://unpkg.com/react@16.12.0/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script> 
+    <script crossorigin src="https://unpkg.com/babel-standalone@7.0.0-beta.3/babel.min.js"></script>    
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.min.js"></script>
+    <script type="text/babel">
+        // 1. 虚拟 DOM 元素对象，不是字符串；
+        // 重要：没有报错的原因在于该脚本 type 为 “text/babel”，
+        // "text/babel" 声明，告知 babel.js 解析里面的代码，前提使需要引入 babel.js 文件
+        const vDom = <h1>Hello, world!</h1>;
+        // 2. 将 虚拟 DOM 元素对象渲染到页面真实 DOM 容器中
+        ReactDOM.render(vDom, document.querySelector('#app'))
+    </script>
+</body>
+</html>

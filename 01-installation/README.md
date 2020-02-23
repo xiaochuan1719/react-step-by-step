@@ -10,13 +10,15 @@
 <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
 <script src="https://unpkg.com/browse/babel-standalone@7/babel.min.js"></script>
+// <script src="https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.development.js"></script>
+// <script src="https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.development.js"></script>
+// <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.min.js"></script>
 ```
 
 ```javascript
 <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/babel-standalone@7/babel.min.js"></script>
-// <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.min.js"></script>
 ```
 
 当然,也可以不通过 CDN 的方式引入；也可以将相关 js 库下载下来，直接通过路径的方式引入到 html 页面中亦可。

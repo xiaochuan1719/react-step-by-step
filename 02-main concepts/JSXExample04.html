@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+        .name-purple {
+            color: purple
+        }
+        .name-red {
+            color: red;
+        }
+        .name-blue {
+            color: royalblue;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 使用 javascript 原生插入元素-->
+    <div id="rootByJs"></div>
+    <!-- 使用 React.createElement() 方法插入元素 -->
+    <div id="rootByReactCreateElement"></div>
+    <!-- 使用 JSX 方法插入元素 -->
+    <div id="rootByJSX"></div>
+
+    <!-- 一个复杂点的例子 -->
+    <div id="rootByHard"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.js"></script>
+
+    <script>
+        // 原生方法插入
+        const htmlNode = document.createElement('h1')
+        htmlNode.innerHTML = 'Hello, Nicholas'
+        htmlNode.className = 'name-purple'
+        document.querySelector('#rootByJs').appendChild(htmlNode)
+    </script>
+
+    <script>
+        // 使用 React.createElement() 方法插入
+        // Create and return a new React element of the given type.
+        // React.createElement(type, [props], [...children])  
+        const element = React.createElement('h1', { className: 'name-red'}, 'Hello, Nicholas')
+        ReactDOM.render(element, document.querySelector('#rootByReactCreateElement'))
+
+
+        // 复杂一点的
+        function formatName(user) {
+            return user.firstName + ' ' + user.lastName
+        }
+
+        const user = {
+            firstName: 'Nicholas',
+            lastName: 'Eee',
+            avatarUrl: './8d81.jpg'
+        }
+
+        const element2 = React.createElement("div", null, React.createElement("h1", null, "Hello, ", formatName(user)), React.createElement("img", {
+            src: user.avatarUrl,
+            alt: "avatar"
+        }));
+        
+        ReactDOM.render(element2, document.querySelector('#rootByHard'))
+    </script>
+
+    <script type="text/babel">
+        // 使用 JSX 方法插入
+        ReactDOM.render(
+            <h1 className="name-blue">Hello, Nicholas</h1>,
+            document.querySelector('#rootByJSX')
+        )
+    </script>
+
+</body>
+</html>

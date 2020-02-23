@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="app"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.js"></script>
+    <script type="text/babel">
+        function formatName(user) {
+            return user.firstName + ' ' + user.lastName
+        }
+
+        const user = {
+            firstName: 'Nicholas',
+            lastName: 'Eee',
+            avatarUrl: './8d81.jpg'
+        }
+
+        // JSX is Expression Too
+        const getGreeting = user => {
+            if (user) {
+                return (
+                    <div>
+                        <h1>Hello, {formatName(user)}</h1>
+                        // Using curly braces to embed a JavaScript expression in an attribute
+                        <img src={user.avatarUrl} alt="avatar" />
+                    </div>
+                )
+            } else {
+                return (
+                    <div>
+                        <h1>Hello, Nicholas</h1>
+                        <div tabIndex="1">tabIndex1</div>
+                        <div tabIndex="3">tabIndex3</div>
+                        <div tabIndex="2">tabIndex2</div>
+                    </div>  
+                )
+            }
+        }
+
+        ReactDOM.render(getGreeting(user), document.querySelector('#app'))
+
+    </script>
+
+</body>
+</html>
