@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.min.js"></script>
+    <script type="text/babel">
+        /**
+         * 需求：封装真正可复用的 Clock 组件
+         * 说明：它将设置自己的计时器并每秒更新一次
+         */
+        const Clock = (props) => {
+            return (
+                <>
+                    <h1>Hello, { props.name }</h1>
+                    <h2>{ props.date.toLocaleTimeString() }</h2>
+                </>
+            )
+        }
+
+        const container = document.querySelector('#app')
+
+        const tick = () => {
+            ReactDOM.render(<Clock date={ new Date() } name="Nicholas" />, container)
+        }
+
+        setInterval(tick, 1000)
+        
+    </script>
+</body>
+
+</html>

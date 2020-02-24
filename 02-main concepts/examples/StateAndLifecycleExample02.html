@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.min.js"></script>
+    <script type="text/babel">
+        /**
+         * 需求：封装真正可复用的 Clock 组件
+         * 说明：它将设置自己的计时器并每秒更新一次
+         */
+        class Clock extends React.Component {
+            // Class 组件应该始终使用 props 参数来调用父类的构造函数
+            constructor(props) {
+                super(props)
+                // this.state 赋初值
+                this.state = { date: new Date() }
+            }
+
+            // `componentDidMount()` 方法会在组件已经被渲染到 DOM 中后运行
+            componentDidMount() {
+                this.timerId = setInterval(() => this.tick(), 1000)
+            }
+
+            componentWillUnmount() {
+                clearInterval(this.timerId)
+            }
+
+            tick() {
+                this.setState({
+                    date: new Date()
+                })
+            }
+
+            render() {
+                const { name } = this.props
+                const { date } = this.state
+                return (
+                    <>
+                        <h1>Hello, { name }</h1>
+                        <h2>{ date.toLocaleTimeString() }</h2>
+                    </>
+                )
+            }
+        }
+
+        const container = document.querySelector('#app')
+
+        ReactDOM.render(<Clock name="Nicholas" />, container)
+        
+    </script>
+</body>
+
+</html>

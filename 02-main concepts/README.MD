@@ -1,6 +1,6 @@
 # MAIN CONCEPTS
 
-## Hello World
+## # Hello World
 
 ```html
 <!DOCTYPE html>
@@ -40,7 +40,7 @@
 ```
 
 
-## Introducing JSX
+## # Introducing JSX
 
 ```js
 // The tag syntax is neither a string nor html
@@ -51,11 +51,11 @@ const element = <h1>Hello, world!</h1>
 
 JSX 可以很好的描述 UI 应该呈现出它应有交互的本质形式。
 
-### Why JSX
+### # Why JSX
 
 React 认为渲染逻辑本质上与其他 UI 逻辑内在耦合，比如，在 UI 中需要绑定处理事件、在某些时刻状态发生变化时需要通知到 UI，以及需要在 UI 中展示准备好的数据。
 
-### Embedding Expressions in JSX
+### # Embedding Expressions in JSX
 
 ```javascript
 const name = 'Nicholas'
@@ -86,7 +86,7 @@ const vDomEle = (
 ReactDOM.render(vDomEle, document.querySelector('#app'))
 ```
 
-### JSX is an Expression Too
+### # JSX is an Expression Too
 
 > After compilation, JSX expressions become regular JavaScript function calls and evaluate to JavaScript objects.
 
@@ -101,7 +101,7 @@ function getGreeting(user) {
 }
 ```
 
-### Specifying Attributes with JSX
+### # Specifying Attributes with JSX
 
 ```javascript
 // You can use quotes to specify string literals as attributes
@@ -119,7 +119,7 @@ const element = <img src={user.avatarUrl} />
 
 比如：`class` -> `className`、`tabindex` -> `tabIndex`
 
-### Specifying Children with JSX
+### # Specifying Children with JSX
 
 > If a tag is empty, you may close it immediately with `/>`，like XML:
 
@@ -154,7 +154,7 @@ const element = <img src={user.avatarUrl}" />
 </>
 ```
 
-### JSX Prevents Injection Attacks
+### # JSX Prevents Injection Attacks
 
 可以安全地在 JSX 当中插入用户输入的内容：
 
@@ -166,7 +166,7 @@ const element = <h1>{title}</h1>
 
 ReactDOM 在渲染所有输入内容之前，默认会进行转义。它可以确保在你的应用中，永远不会注入那些并非自己明确编写的内容。所有的内容在渲染之前都被转义成了字符串；可有效防止 `XSS (cross-site-scripting 跨站脚本攻击)` 攻击
 
-### JSX Represents Objects 
+### # JSX Represents Objects 
 
 > Babel compiles JSX down to `React.createElement()` calls.
 
@@ -197,13 +197,13 @@ const element = {
 ```
 
 
-## Rendering Elements
+## # Rendering Elements
 
 > Elements are the smallest building blocks of React apps.
 
 元素是 React 应用程序的最小构建块。
 
-### Rendering an Element into the DOM
+### # Rendering an Element into the DOM
 
 ```html
 <!-- "root" DOM node，everything inside it will be managed by React DOM -->
@@ -220,7 +220,7 @@ const vDom = <h1>Hello, world!</h1>;
 ReactDOM.render(vDom, document.querySelector('#app'))
 ```
 
-### Updating the Rendered Element
+### # Updating the Rendered Element
 
 > React elements are `immutable`. Once you create an element, you can't change its children or attributes.
 
@@ -245,7 +245,7 @@ setInterval(tick, 1000)
 
 > **注意：** 在实际的 React 应用中只会调用一次 `ReactDOM.render(element, container[, callback])`; 
 
-### React Only Updates What's Necessary
+### # React Only Updates What's Necessary
 
 > React DOM compares the element and its children to the previous one, and only applies the DOM updates necessary to bring the DOM to the desired state.
 
@@ -254,7 +254,7 @@ setInterval(tick, 1000)
 从上图可以清晰看到，尽管每一秒我们都会新创建一个描述整个 UI 树的元素，React DOM 只会更新实际改变了的内容，也就是例子中的文本节点。
 
 
-## Components and Props
+## # Components and Props
 
 > Components let you split the UI into independent, reusable pieces and think about each piece in isolation.
 
@@ -262,7 +262,7 @@ setInterval(tick, 1000)
 
 Conceptually, components are like JavaScript functions. They accept arbitrary(任意地) inputs (called "props") and return React elements describing what should appear on the screen.
 
-### 模块与组件 和 模块化与组件化
+### # 模块与组件 和 模块化与组件化
 
 - **模块**
 
@@ -272,7 +272,7 @@ Conceptually, components are like JavaScript functions. They accept arbitrary(�
 
 用来实现特定（局部）功能效果的代码集合（html/css/js），在较高层面上来看，其实就是一个自定义的包含特定动能的元素。
 
-### Function and Class Components
+### # Function and Class Components
 
 ```javascript
 // 1. Function Components
@@ -312,7 +312,7 @@ ReactDOM.render(<ClassComponent name="Nicholas1" />, document.querySelector('#ro
 >
 > React 会将以小写字母开头的组件视为原生 DOM 标签。
 
-### Composing Components
+### # Composing Components
 
 定义组件的时候，可以引用其他组件。利用这一特性，我们可以用同一组件抽象出任意层次的细节。按钮、表单、对话框、甚至整个屏幕的内容：在 React 应用程序中，这些通常都会以组件的形式表示。
 
@@ -335,13 +335,13 @@ const App = () => {
 ReactDOM.render(<App />, document.querySelector('#rootByFunComponents'))
 ```
 
-### Props
+### # Props
 
 组件无论使用函数声明还是通过 class 声明，都决不能修改自身的 `props`。
 
 > 所有 React 组件都必须像纯函数一样保护它们的 props 不被更改。
 
-#### 需求：自定义一个组件，用来显示一个人员信息
+#### # 需求：自定义一个组件，用来显示一个人员信息
 
 说明：1.如果性别没有指定，默认为“男“；2.如果年龄没有指定，默认为“18”
 
@@ -399,6 +399,266 @@ const container = document.querySelector("#rootByFunComponents");
 ReactDOM.render(<Person { ...UserName } />, container);
 ```
 
-## State and Lifecycle
+## # State and Lifecycle
 
+在元素渲染章节，我们了解了一种更新 UI 界面的方法：通过调用 `ReactDOM.render()` 来修改需要渲染的元素
 
+```javascript
+const tick = () => {
+    const element = (
+        <>
+            <h1 className="name-purple">Hello, Nicholas</h1>
+            <h2>TIME: { new Date().toLocaleTimeString() }</h2>
+        </>
+    )
+
+    ReactDOM.render(element, document.querySelector('#app'))
+}
+
+setInterval(tick, 1000)
+```
+
+本章节将基于这个例子继续学习另外的实现 UI 界面更新的方法。
+
+### # 需求：封装一个可复用的 `Clock` 组件
+
+```javascript
+/**
+* 需求：封装真正可复用的 Clock 组件
+*/
+const Clock = (props) => {
+    return (
+        <>
+            <h1>Hello, { props.name }</h1>
+            <h2>{ props.date.toLocaleTimeString() }</h2>
+        </>
+    )
+}
+
+const container = document.querySelector('#app')
+
+const tick = () => {
+    ReactDOM.render(<Clock date={ new Date() } />, container)
+}
+
+setInterval(tick, 1000)
+```
+
+但是，上面的实现缺少了一个关键的技术细节：`Clock` 组件需要设置一个自己的计时器并每秒更新一次。
+
+理想情况下，我们希望只编写一次渲染代码，便可让 `Clock` 组件实现自我更新。
+
+如此，我们需要引入一个新的概念：State 。State 与 Props 类似，但是 state 是私有的，并且完全受控于当前组件。
+
+> State 本质控制的是组件状态，而函数组件是无状态组件，所以当使用 state 时，必须是在 Class 组件里面使用
+
+```javascript
+/**
+* 需求：封装真正可复用的 Clock 组件
+* 说明：将函数组件转换成 class 组件
+*/
+// 1. 创建一个同名的 ES6 class, 并继承于 `React.Component`
+// 2. 添加一个空的 `render()` 方法
+// 3. 将函数体移到 `render()` 方法之中
+// 4. 在 `render()` 方法中使用 `this.props` 替换 `props`
+// 5. 移除 `setInterval()` 方法，只保留 `ReactDOM.render()`
+class Clock extends React.Component {
+    render () {
+        return (
+            <>
+                <h1>Hello, { this.props.name }</h1>
+                <h2>{ this.props.date.toLocaleTimeString() }</h2>
+            </>
+        )
+    }
+}
+
+const container = document.querySelector('#app')
+
+ReactDOM.render(<Clock date={ new Date() } />, container)
+```
+
+现在 `Clock` 组件被定义为 class，而不是函数。
+
+每次组件更新时 `render` 方法都会被调用，但只要在相同的 DOM 节点中渲染 `<Clock />`，就仅有一个 `Clock` 组件的 class 实例被创建使用。
+
+```javascript
+/**
+* 需求：封装真正可复用的 Clock 组件
+* 说明：向 class 组件中添加局部的 state
+*/
+class Clock extends React.Component {
+    // Class 组件应该始终使用 props 参数来调用父类的构造函数
+    constructor (props) {
+        super(props)
+        // this.state 赋初值
+        this.state = { date: new Date() }
+    }
+
+    render () {
+        return (
+            <>
+                <h1>Hello, { this.props.name }</h1>
+                <h2>{ this.state.date.toLocaleTimeString() }</h2>
+            </>
+        )
+    }
+}
+
+const container = document.querySelector('#app')
+
+ReactDOM.render(<Clock name="Nicholas" />, container)
+```
+
+> Class 组件应该始终使用 `props` 参数来调用父类的构造函数
+
+```javascript
+/**
+* 需求：封装真正可复用的 Clock 组件
+* 说明：设置自己的计时器并每秒更新一次 —— 通过生命周期函数实现 state 自动更新
+*/
+class Clock extends React.Component {
+    // Class 组件应该始终使用 props 参数来调用父类的构造函数
+    constructor(props) {
+        super(props)
+        // this.state 赋初值
+        this.state = { date: new Date() }
+    }
+
+    // `componentDidMount()` 方法会在组件已经被渲染到 DOM 中后运行
+    componentDidMount() {
+        this.timerId = setInterval(() => this.tick(), 1000)
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerId)
+    }
+
+    tick() {
+        this.setState({
+            date: new Date()
+        })
+    }
+
+    render() {
+        return (
+            <>
+                <h1>Hello, { this.props.name }</h1>
+                <h2>{ this.state.date.toLocaleTimeString() }</h2>
+            </>
+        )
+    }
+}
+
+const container = document.querySelector('#app')
+
+ReactDOM.render(<Clock name="Nicholas" />, container)
+```
+
+1. 当 `<Clock />` 传给 `ReactDOM.render()` 的时候，React 会调用 `Clock` 组件的构造函数：初始化 `this.state`;
+
+2. 之后 React 会调用组件的 `render()` 方法，将组件渲染到页面上显示；
+
+3. 当 `Clock` 组件插入到 DOM 中后，React 就会调用 `ComponentDidMount()` 生命周期方法；
+
+4. `ComponentDidMount()` 方法中实现了一个计时器，浏览器每秒都会调用一次 `tick()` 方法。在这个方法中，`Clock` 组件会通过调用 `setState()` 来更新状态，当状态发生改变，React 便会重新调用 `render()` 方法来确定页面上该显示什么。`this.state.date` 发生改变，React 会相应的更新 DOM；
+
+5. 一旦 `Clock` 组件从 DOM 中被移除，React 就会调用 `componentWillUnmount()` 生命周期方法；
+
+### # 正确地使用 `State`
+
+关于 `setState()` 需要注意：
+
+- 不要直接修改 `State` ；构造函数是唯一可以给 `this.state` 赋值的地方
+
+```javascript
+// Wrong
+this.state.comment = 'Hello'
+
+// Correct
+this.setState({ comment: 'Hello' })
+```
+
+- `State` 的更新可能是异步的
+
+    出于性能的考虑，React 可能会把多个 `setState()` 调用合并成一个调用；
+
+    由于 `this.props` 和 `this.state` 可能会异步更新，所以不要依赖他们的值来更新下一个状态；
+
+    要解决这个问题，可以让 `setState()` 接收一个函数而不是一个对象。这个函数第一个参数是 `state`, 第二个参数是 `props`，且该函数返回一个对象；
+
+```javascript
+// Wrong
+this.setState({
+    counter: this.state.counter + this.props.increment
+})
+
+// Correct
+this.setState(function(state, props) {
+    return {
+        counter: state.counter + props.increment
+    }
+})
+
+// 或者使用箭头函数
+this.setState((state, props) => ({ 
+    counter: state.counter + props.increment 
+}));
+```
+
+- `State` 的更新会被合并
+
+    当你调用 `setState()` 的时候，React 会把你提供的对象合并（浅合并）到当前的 `state`;
+
+```javascript
+// 例如：state 中包含几个独立的变量
+constructor(props) {
+    super(props)
+    this.state = {
+        posts: [],
+        comments: []
+    }
+}
+
+// 然后可以分别调用 `setState()` 来单独地更新它们
+componentDidMount() {
+    fetchPosts().then(response => {
+        this.setState({
+            posts: response.posts
+        })
+    })
+
+    fetchComments().then(response => {
+        // 完整保留了 `this.state.posts`，但完全替换了 `this.state.comments`
+        this.setState({
+            comments: response.comments
+        })
+    })
+}
+```
+
+### # 数据是向下流动的
+
+> Neither parent nor child components can know if a certain(某些、某个) component is stateful or stateless， and they shoudn't care whether it is defined as a function or a class.
+
+不管父组件还是子组件都无法知道某个组件是有状态的还是无状态的，并且它们也并不关心它是函数组件还是 class 组件。
+
+这就是为什么称 `state` 为局部的或是封装的原因。
+
+```html
+<!-- 组件可以选择把它的 state 作为 props 向下传递到它的子组件中 -->
+<h2>{ this.state.date.toLocaleTimeString() }</h2>
+
+<!-- 这对于自定义组件同样适用 -->
+<FomatterDate date={ this.state.date } />
+```
+
+组件本身无法知道它原来是来自于父组件的 state 还是父组件的 props ，还是手动输入的：
+
+```javascript
+function FormattedDate(props) {
+    return <h2>{ props.date.toLocaleTimeString() }</h2>
+}
+```
+
+这通常被叫做 **自上而下（top-down）** 或是 **单向（unidirectional）** 的数据流。任何的 state 总是所属于特定的组件，而且从该 state 派生的任何数据或 UI 只能影响树中”低于“它们的组件。
