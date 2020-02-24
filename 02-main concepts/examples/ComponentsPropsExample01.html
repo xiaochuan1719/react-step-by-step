@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="rootByFunComponents"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prop-types@15.7.1/prop-types.min.js"></script>
+    <script type="text/babel">
+        /**
+         * 需求：自定义一个组件，用来显示一个人员信息
+         * 说明：1.如果性别没有指定，默认为“男“；2.如果年龄没有指定，默认为“18”
+         */
+        const Person = props => {
+            console.log(props);
+            return (
+                <>
+                    <div>Name: { props.name }</div>
+                    <div>Age: { props.age }</div>
+                    <div>Sex: { props.sex }</div>
+                </>
+            );
+        };
+
+        // class Person extends React.Component {
+        //     render () {
+        //         console.log(this)
+        //         return (
+        //             <>
+        //                 <div>Name: { this.props.userInfo.name }</div>
+        //                 <div>Age: { this.props.userInfo.age }</div>
+        //                 <div>Sex: { this.props.userInfo.sex }</div>
+        //             </>
+        //         )
+        //     }
+        // }
+
+        // defaultProps 
+        // 可以为组件添加默认 props。这一般用于 props 未赋值，但又不能为 null 的情况。
+        Person.defaultProps = {
+            age: 18,
+            sex: 'Male'
+        }
+
+        const UserName = {
+            name: "Nicholas",
+            age: 20
+        };
+
+        let element = <Person name={ UserName.name } age={ UserName.age } sex={ UserName.sex } />;
+
+        const container = document.querySelector("#rootByFunComponents");
+
+        // 组件属性设置的两种方式（暂时已知的 😂）
+
+        // 1. 显示指定各个属性：（JavaScript表达式，字符串字面量，Props默认值为 ”True“）
+        // ReactDOM.render(element, container);
+
+        // 2. 使用 ES6 的扩展符 Spread Attributes
+        ReactDOM.render(<Person { ...UserName } />, container);
+    </script>
+</body>
+
+</html>

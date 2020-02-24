@@ -39,6 +39,7 @@
 </html>
 ```
 
+
 ## Introducing JSX
 
 ```js
@@ -194,5 +195,210 @@ const element = {
     }
 }
 ```
+
+
+## Rendering Elements
+
+> Elements are the smallest building blocks of React apps.
+
+元素是 React 应用程序的最小构建块。
+
+### Rendering an Element into the DOM
+
+```html
+<!-- "root" DOM node，everything inside it will be managed by React DOM -->
+<div id="root"></div>
+```
+
+通常，使用 React 构建的应用只有单一的根 DOM 节点。如果想要将一个 React 元素渲染到根 DOM 节点中，只需要把它们一起传入 `ReactDOM.render(element, container[, callback])`。
+
+就像最初的 `Hello, world` 例子一样：
+
+```javascript
+// vDom 就是 “React 元素”
+const vDom = <h1>Hello, world!</h1>;
+ReactDOM.render(vDom, document.querySelector('#app'))
+```
+
+### Updating the Rendered Element
+
+> React elements are `immutable`. Once you create an element, you can't change its children or attributes.
+
+那么，在当前（前面已了解到的知识）我们该如何更新已渲染的元素呢？
+
+唯一的方式就是创建一个新的 React 元素，并将其传入到 `ReactDOM.render(element, container[, callback])` ，重新渲染到根节点：
+
+```javascript
+const tick = () => {
+    const element = (
+        <>
+            <h1 className="name-purple">Hello, Nicholas</h1>
+            <h2>TIME: { new Date().toLocaleTimeString() }</h2>
+        </>
+    )
+
+    ReactDOM.render(element, document.querySelector('#app'))
+}
+
+setInterval(tick, 1000)
+```
+
+> **注意：** 在实际的 React 应用中只会调用一次 `ReactDOM.render(element, container[, callback])`; 
+
+### React Only Updates What's Necessary
+
+> React DOM compares the element and its children to the previous one, and only applies the DOM updates necessary to bring the DOM to the desired state.
+
+![](./rendering-elements.gif)
+
+从上图可以清晰看到，尽管每一秒我们都会新创建一个描述整个 UI 树的元素，React DOM 只会更新实际改变了的内容，也就是例子中的文本节点。
+
+
+## Components and Props
+
+> Components let you split the UI into independent, reusable pieces and think about each piece in isolation.
+
+组件允许你将 UI 拆分为独立的、可复用的代码片段，并单独考虑每个代码片段。
+
+Conceptually, components are like JavaScript functions. They accept arbitrary(任意地) inputs (called "props") and return React elements describing what should appear on the screen.
+
+### 模块与组件 和 模块化与组件化
+
+- **模块**
+
+模块就是向外提供特定功能的 js 程序，一般就是一个 js 文件；目的是为了复用 js ，简化 js 的编写，提高 js 运行效率。
+
+- **组件**
+
+用来实现特定（局部）功能效果的代码集合（html/css/js），在较高层面上来看，其实就是一个自定义的包含特定动能的元素。
+
+### Function and Class Components
+
+```javascript
+// 1. Function Components
+// 接收唯一带有数据的 "props"
+const FunComponent = (props) => {
+    console.log(props)
+    return (
+        <> 
+            <h1>Hello, { props.name }</h1>
+            <h3>Function Components (函数组件 —— 简单组件)</h3>
+        </>
+    )
+}
+
+// 渲染组件
+ReactDOM.render(<FunComponent name="Nicholas" />, document.querySelector('#rootByFunComponents'))
+
+// 2. Class Components
+class ClassComponent extends React.Component {
+    render() {
+        // 打印实例对象
+        console.log(this)
+        return (
+            <> 
+                <h1>Hello, { this.props.name }</h1>
+                <h3>Class Components (ES6类组件 —— 复杂组件)</h3>
+            </>
+        ) 
+    }
+}
+
+// 渲染组件
+ReactDOM.render(<ClassComponent name="Nicholas1" />, document.querySelector('#rootByClassComponents'))
+```
+
+> **注意：组件名称必须以大写字母开头。**
+>
+> React 会将以小写字母开头的组件视为原生 DOM 标签。
+
+### Composing Components
+
+定义组件的时候，可以引用其他组件。利用这一特性，我们可以用同一组件抽象出任意层次的细节。按钮、表单、对话框、甚至整个屏幕的内容：在 React 应用程序中，这些通常都会以组件的形式表示。
+
+```javascript
+// 组合组件
+const HelloComponent = (props) => {
+    return <h1>Hello, { props.name }</h1>
+}
+
+const App = () => {
+    return (
+        <> 
+            <HelloComponent name="Nicholas" />
+            <HelloComponent name="Sara" />
+            <HelloComponent name="Ethan" />
+        </>
+    )
+}
+
+ReactDOM.render(<App />, document.querySelector('#rootByFunComponents'))
+```
+
+### Props
+
+组件无论使用函数声明还是通过 class 声明，都决不能修改自身的 `props`。
+
+> 所有 React 组件都必须像纯函数一样保护它们的 props 不被更改。
+
+#### 需求：自定义一个组件，用来显示一个人员信息
+
+说明：1.如果性别没有指定，默认为“男“；2.如果年龄没有指定，默认为“18”
+
+```javascript
+/**
+* 需求：自定义一个组件，用来显示一个人员信息
+* 说明：1.如果性别没有指定，默认为“男“；2.如果年龄没有指定，默认为“18”
+*/
+const Person = props => {
+    console.log(props);
+    return (
+        <>
+            <div>Name: { props.name }</div>
+            <div>Age: { props.age }</div>
+            <div>Sex: { props.sex }</div>
+        </>
+    );
+};
+
+// class Person extends React.Component {
+//     render () {
+//         console.log(this)
+//         return (
+//             <>
+//                 <div>Name: { this.props.name }</div>
+//                 <div>Age: { this.props.age }</div>
+//                 <div>Sex: { this.props.sex }</div>
+//             </>
+//         )
+//     }
+// }
+
+// defaultProps 
+// 可以为组件添加默认 props。这一般用于 props 未赋值，但又不能为 null 的情况
+Person.defaultProps = {
+    age: 18,
+    sex: 'Male'
+}
+
+const UserName = {
+    name: "Nicholas",
+    age: 20
+};
+
+let element = <Person name={ UserName.name } age={ UserName.age } sex={ UserName.sex } />;
+
+const container = document.querySelector("#rootByFunComponents");
+
+// 组件属性设置的两种方式（暂时已知的 😂）
+
+// 1. 显示指定各个属性：（JavaScript表达式，字符串字面量，Props默认值为 ”True“）
+// ReactDOM.render(element, container);
+
+// 2. 使用 ES6 的扩展符 Spread Attributes
+ReactDOM.render(<Person { ...UserName } />, container);
+```
+
+## State and Lifecycle
 
 

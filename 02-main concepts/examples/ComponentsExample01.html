@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <!-- 函数组件 无状态 最简单的方式 -->
+    <div id="rootByFunComponents"></div>
+    <!-- ES6类组件 有状态 复杂组件 -->
+    <div id="rootByClassComponents"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.min.js"></script>
+    <script type="text/babel">
+        
+        // 1. Function Components
+        // 接收唯一带有数据的 "props"
+        const FunComponent = (props) => {
+            return (
+                <> 
+                    <h1>Hello, Nicholas</h1>
+                    <h3>Function Components (函数组件 —— 无状态，简单组件)</h3>
+                </>
+            )
+        }
+
+        ReactDOM.render(<FunComponent />, document.querySelector('#rootByFunComponents'))
+
+        // 2. Class Components
+        class ClassComponent extends React.Component {
+            render() {
+                // 打印实例对象
+                console.log(this)
+                return (
+                    <> 
+                        <h1>Hello, Nicholas</h1>
+                        <h3>Class Components (ES6类组件 —— 有状态，复杂组件)</h3>
+                    </>
+                ) 
+            }
+        }
+
+        ReactDOM.render(<ClassComponent />, document.querySelector('#rootByClassComponents'))
+
+    </script>
+
+</body>
+</html>
