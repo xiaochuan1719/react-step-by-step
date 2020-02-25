@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style type="text/css">
+        #app {
+            width: 400px;
+            height: 400px;
+            margin: auto;
+            margin-top: 50px;
+        }
+        .container {
+            text-align: center;
+        }
+        .container > button {
+            width: 35px;
+            height: 35px;
+            border: 1px solid #eee;
+        }
+        .container > span {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.min.js"></script>
+    <script type="text/babel">
+        /**
+         * 需求：改造 StateAndLifecycleExample04.html 的 TotalCount 应用
+         * 说明：将需要通过 bind() 方法强制指定对象的操作改造为不需要 bind() 方法指定的写法
+         *   使用箭头函数，其 this 指向函数所在的作用域，即当前组件对象
+         */
+        class TotalCount extends React.Component {
+            constructor(props) {
+                super(props)
+                this.state = {
+                    totalValue: 0
+                }
+                
+                // this.updateCount = this.updateCount.bind(this)
+            }
+
+            // 更新 total value 
+            updateCount = (preValue, newValue) => {
+                this.setState({
+                    totalValue: this.state.totalValue + (newValue - preValue)
+                })
+            }
+
+            render() {
+                return (
+                    <div className="container">
+                        <Counter aValue="0" updateCount={ this.updateCount } />
+                        <br/><br/>
+                        <Counter aValue="0" updateCount={ this.updateCount } />
+                        <br/><br/>
+                        <Counter aValue="0" updateCount={ this.updateCount } />
+                        <hr/>
+                        <div> Total Count: { this.state.totalValue } </div>
+                    </div>
+                )
+            }
+        }
+
+        class Counter extends React.Component {
+            constructor(props) {
+                super(props)
+
+                this.state = {
+                    initValue: this.props.aValue
+                }
+
+                // 与 render 函数的 onClick 绑定，将 this 绑定为组件对象
+                // this.onClickAdd = this.onClickAdd.bind(this)
+                // this.onClickReduce = this.onClickReduce.bind(this)
+            }
+
+            onClickAdd = () => {
+                this.handleUpdateValue(true)
+            }
+
+            onClickReduce = () => {
+                this.handleUpdateValue(false)
+            }
+
+            handleUpdateValue = (flag) => {
+                const preValue = this.state.initValue
+                const newValue = flag ? ++this.state.initValue : --this.state.initValue
+                this.setState({
+                    initValue: newValue
+                })
+                // 重要：这里将函数作为一个 props 来传递数据
+                this.props.updateCount(preValue, newValue)
+            }
+
+            render() {
+                return (
+                    <>
+                        <button onClick={ this.onClickAdd }> + </button>
+                        <span>计数：{ this.state.initValue }</span>
+                        <button onClick={ this.onClickReduce }> - </button>
+                    </>
+                )
+            }
+        }
+
+        const container = document.querySelector('#app')
+
+        ReactDOM.render(<TotalCount />, container)
+
+    </script>
+</body>
+
+</html>

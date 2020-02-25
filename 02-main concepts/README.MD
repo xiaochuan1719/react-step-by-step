@@ -337,6 +337,8 @@ ReactDOM.render(<App />, document.querySelector('#rootByFunComponents'))
 
 ### # Props
 
+`props` 是用于整个组件树中 `传递数据` 和 `配置`；在当前组件访问 `props`，使用 `this.props`。
+
 组件无论使用函数声明还是通过 class 声明，都决不能修改自身的 `props`。
 
 > 所有 React 组件都必须像纯函数一样保护它们的 props 不被更改。
@@ -662,3 +664,292 @@ function FormattedDate(props) {
 ```
 
 这通常被叫做 **自上而下（top-down）** 或是 **单向（unidirectional）** 的数据流。任何的 state 总是所属于特定的组件，而且从该 state 派生的任何数据或 UI 只能影响树中”低于“它们的组件。
+
+> **尽可能使用 `props` 当做数据源，`state` 用来存放状态值（简单的数据）**
+
+### # 需求：实现一个手动计数的应用（一）
+
+说明：设计一个 button 的简单手动计数器应用，点击 "+" button 计数器增加1，点击 "-" button 计数器减1；
+
+```javascript
+/**
+* 需求：实现一个手动计数的应用
+* 说明：设计一个 button 的简单手动计数器应用，点击 "+" button 计数器增加1，点击 "-" button 计数器减1；
+*/
+class Counter extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            initValue: 0
+        }
+
+        // 与 render 函数的 onClick 绑定，将 this 绑定为组件对象
+        this.onClickAdd = this.onClickAdd.bind(this)
+        this.onClickReduce = this.onClickReduce.bind(this)
+    }
+
+    onClickAdd() {
+        // 内部的 this 默认不是组件对象，而是 undefined；需要主动强制绑定组件对象
+        console.log(this)
+        // 读取状态并计算
+        this.state.initValue++
+        // 更新状态 state
+        this.setState({
+            initValue: this.state.initValue
+        })
+    }
+
+    onClickReduce() {
+        console.log(this)
+        this.state.initValue--
+        this.setState({
+            initValue: this.state.initValue
+        })
+    }
+
+    render() {
+        return (
+            <div className="container">
+                <button onClick={ this.onClickAdd }> + </button>
+                <span>计数：{ this.state.initValue }</span>
+                <button onClick={ this.onClickReduce }> - </button>
+            </div>
+        )
+    }
+}
+
+const container = document.querySelector('#app')
+
+ReactDOM.render(<Counter initValue="0" />, container)
+```
+
+### # 需求：实现一个手动计数的应用（二）
+
+说明：
+
+1. 设计一个 button 的简单手动计数器应用，点击 "+" button 计数器增加1，点击 "-" button 计数器减1；
+
+2. 三个同样的计数器手动计数，然后算出最终的计数结果，并展示
+
+    ![](./button-counter.png)
+
+```javascript
+// Parent Component
+class TotalCount extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            totalValue: 0
+        }
+        
+        this.updateCount = this.updateCount.bind(this)
+    }
+
+    updateCount(preValue, newValue) {
+        this.setState({
+            totalValue: this.state.totalValue + (newValue - preValue)
+        })
+    }
+
+    render() {
+        return (
+            <div className="container">
+                // 将 updateCount 作为 props 传递给 Child Component
+                <Counter aValue="0" updateCount={ this.updateCount } />
+                <br/><br/>
+                <Counter aValue="0" updateCount={ this.updateCount } />
+                <br/><br/>
+                <Counter aValue="0" updateCount={ this.updateCount } />
+                <hr/>
+                <div> Total Count: { this.state.totalValue } </div>
+            </div>
+        )
+    }
+}
+
+// Child Component
+class Counter extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            initValue: this.props.aValue
+        }
+
+        // 与 render 函数的 onClick 绑定，将 this 绑定为组件对象
+        this.onClickAdd = this.onClickAdd.bind(this)
+        this.onClickReduce = this.onClickReduce.bind(this)
+    }
+
+    onClickAdd() {
+        this.handleUpdateValue(true)
+    }
+
+    onClickReduce() {
+        this.handleUpdateValue(false)
+    }
+
+    handleUpdateValue(flag) {
+        const preValue = this.state.initValue
+        const newValue = flag ? ++this.state.initValue : --this.state.initValue
+        this.setState({
+            initValue: newValue
+        })
+        // 重要：这里将函数作为一个 props 来传递数据
+        this.props.updateCount(preValue, newValue)
+    }
+
+    render() {
+        return (
+            <>
+                <button onClick={ this.onClickAdd }> + </button>
+                <span>计数：{ this.state.initValue }</span>
+                <button onClick={ this.onClickReduce }> - </button>
+            </>
+        )
+    }
+}
+
+const container = document.querySelector('#app')
+
+ReactDOM.render(<TotalCount />, container)
+```
+
+## # Handling Events
+
+> Handling events with React elements is very similar to handling events on DOM elements. 
+
+但是有一点语法上的不同：
+
+- React 事件的命名采用小驼峰式（camelCase），而不是纯小写
+
+- 使用 JSX 语法时你需要传入一个函数作为事件处理函数，而不是一个字符串
+
+```html
+<!-- DOM 元素事件处理 -->
+<button onclick="activateLasers()" >
+    Activate Lasers
+</button>
+
+<!-- React 元素事件处理 -->
+<button onClick={ activateLasers }>
+    Activate Lasers
+</button>
+```
+
+- React 中不能通过返回 `false` 的方式阻止默认行为，必须显式的使用 `preventDefault`
+
+```html
+<!-- 传统 html 中 -->
+<a herf="#" onclick="console.log('The link was clicked.') return false">
+    Click Me
+</a>
+```
+
+```javascript
+// 在 React 中
+const ActionLink = () => {
+    const handleClick = e => {
+        e.preventDefault()
+        console.log('The link was clicked.')
+    }
+
+    return (
+        <a herf="#" onClick={ handleClick }>
+            Click Me
+        </a>
+    )
+}
+```
+
+使用 React 时，一般不需要使用 `addEventListener` 为已创建的 DOM 元素添加监听器；通常只需要在该元素初始渲染的时候添加监听器即可。
+
+```javascript
+class Toggle extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            isToggleOn: true
+        }
+
+        // This binding is necessary to make `this` work in the callback
+        this.handleClick = this.handleClick.bind(this)
+    }
+
+    handleClick() {
+        console.log(this)
+        this.setState(state => ({ isToggleOn: !state.isToggleOn }))
+    }
+
+    render() {
+        return (
+            <button onClick={ this.handleClick }>
+                { this.state.isToggleOn ? 'ON' : 'OFF' }
+            </button>
+        )
+    }
+}
+
+ReactDOM.render(<Toggle />, document.querySelector('#app'))
+```
+
+**必须谨慎对待 JSX 回调函数中的 `this`**，在 JavaScript 中，class 的方法默认不会绑定 `this`。
+
+如果觉得使用 `bind()` 方法绑定 `this` 很麻烦，有两种方式可以解决：
+
+- 如果你正在使用实验性的 `public class fields` 语法，你可以使用 class fields 正确的绑定回调函数；
+
+```javascript
+class LoggingButton extends React.Component {
+    // This syntax ensures `this` is bound within handleClick.
+    // Warning: this is *experimental* syntax.
+    handleClick = () => {
+        console.log('this is:', this)
+    }
+
+    render() {
+        return (
+            <button onClick={ this.handleClick }>
+                Click Me
+            </button>
+        )
+    }
+}
+```
+
+**重要**：`Create React App` 默认启用此语法
+
+- 如果没有使用 class fields 语法，你可以在回调中使用箭头函数（arrow function）;
+
+```javascript
+class LoggingButton extends React.Component {
+    handleClick() {
+        console.log('this is:', this)
+    }
+
+    render() {
+        // This syntax ensures `this` is bound within handleClick.
+        return (
+            <button onClick={ (e) => this.handleClick(e) }>
+                Click Me
+            </button>
+        )
+    }
+}
+```
+
+但此语法的问题在于每次渲染 `LoggingButton` 时都会创建不同的回调函数。大多数情况下，这个是没什么问题的，但如果该回调函数作为 prop 传入子组件时，这些组件可能会进行额外的重新渲染。
+
+通常建议在构造器中绑定或者使用 class fields 语法来避免这类性能问题。
+
+### # Passing Arguments to Event Handlers
+
+在循环中，通常需要为事件处理函数传递额外的参数；
+
+```html
+<button onClick={ (e) => this.deleteRow(id, e) }>Delete Row</button>
+<button onClick={ this.deleteRow.bind(this, id) }></button>
+```
+
+上述两种方式时等价的，分别通过 `箭头函数` 和 `Function.prototype.bind` 来实现；通过箭头函数的方式，事件对象必须显式的进行传递，而通过 `bind` 的方式，事件对象以及更过的参数将会被隐式的进行传递。
