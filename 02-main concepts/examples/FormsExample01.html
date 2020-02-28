@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Forms</title>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.min.js"></script>
+    <script type="text/babel">
+
+        class NameForm extends React.Component {
+            constructor(props) {
+                super(props)
+                this.state = { value: '' }
+                
+                this.handleChange = this.handleChange.bind(this)
+                this.handleSubmit = this.handleSubmit.bind(this)
+            }
+
+            handleChange(event) {
+                this.setState({
+                    value: event.target.value
+                })
+            }
+
+            handleSubmit(event) {
+                event.preventDefault()
+                alert('提交的名字：' + this.state.value)
+            }
+
+            render() {
+                return (
+                    <form onSubmit={ this.handleSubmit }>
+                        <label>
+                            名字：<input type="text" value={ this.state.value } onChange={ this.handleChange } />
+                        </label>
+                        <input type="submit" value="提交" />
+                    </form>
+                )
+            }
+        }
+
+        ReactDOM.render(<NameForm />, document.querySelector('#app'))
+
+    </script>
+</body>
+
+</html>

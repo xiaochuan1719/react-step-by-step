@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Lifting State Up</title>
+  </head>
+
+  <body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.min.js"></script>
+    <script type="text/babel">
+      // 摄氏度与华氏度之间相互转换函数
+      const toCelsius = fahrenheit => {
+        return ((fahrenheit - 32) * 5) / 9
+      }
+
+      const toFahrenheit = celsius => {
+        return (celsius * 9) / 5 + 32
+      }
+
+      // 当输入 temperature 的值无效时，函数返回空字符串，反之，则返回保留三位小数并四舍五入后的转换结果
+      const tryConvert = (temperature, convert) => {
+        const input = parseFloat(temperature)
+        if (Number.isNaN(input)) {
+          return ""
+        }
+        const output = convert(input)
+        const rounded = Math.round(output * 1000) / 1000
+        return rounded.toString()
+      }
+
+      // BoilingVerdidct 组件，接受 celius 温度作为一个 prop
+      const BoilingVerdict = props => {
+        if (props.celsius >= 100) {
+          return <p>The water would boil.</p>
+        }
+        return <p>The water would not boil.</p>
+      }
+
+      const scaleNames = {
+        c: "Celsius",
+        f: "Fahrenheit"
+      }
+
+      // “状态提升”：在 React 中，将多个组件中需要共享的 state 向上移动到它们的最近共同父组件中，便可实现共享 state.
+      class TemperatureInput extends React.Component {
+        constructor(props) {
+          super(props)
+          // this.state = { temperature: '' }
+          this.handleChange = this.handleChange.bind(this)
+        }
+
+        handleChange(e) {
+          // this.setState({ temperature: e.target.value })
+          this.props.onTemperatureChange(e.target.value)
+        }
+
+        render() {
+          const temperature = this.props.temperature
+          const scale = this.props.scale
+          return (
+            <fieldset>
+              <legend>Enter temperature in {scaleNames[scale]}</legend>
+              <input type="text" value={temperature} onChange={this.handleChange} />
+            </fieldset>
+          )
+        }
+      }
+
+      // 创建名为 Calculator 组件，它渲染一个用于输入温度的 <input>,
+      // 并将其值保存在 this.state.temperature 中
+      class Calculator extends React.Component {
+        constructor(props) {
+          super(props)
+          this.state = { temperature: "", scale: "c" }
+          this.handleCelsiusChange = this.handleCelsiusChange.bind(this)
+          this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this)
+        }
+
+        handleCelsiusChange(temperature) {
+          this.setState({ scale: "c", temperature })
+        }
+
+        handleFahrenheitChange(temperature) {
+          this.setState({ scale: "f", temperature })
+        }
+
+        render() {
+          const scale = this.state.scale
+          const temperature = this.state.temperature
+          const celsius = scale === "f" ? tryConvert(temperature, toCelsius) : temperature
+          const fahrenheit = scale === "c" ? tryConvert(temperature, toFahrenheit) : temperature
+          return (
+            <div>
+              <TemperatureInput scale="c" temperature={celsius} onTemperatureChange={this.handleCelsiusChange} />
+              <TemperatureInput scale="f" temperature={fahrenheit} onTemperatureChange={this.handleFahrenheitChange} />
+              <BoilingVerdict celsius={parseFloat(celsius)} />
+            </div>
+          )
+        }
+      }
+
+      ReactDOM.render(<Calculator />, document.querySelector("#app"))
+    </script>
+  </body>
+</html>

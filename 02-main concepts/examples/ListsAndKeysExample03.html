@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Lists and Keys</title>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.min.js"></script>
+    <script type="text/babel">
+
+        // 提取出一个 ListItem 组件
+        const ListItem = (props) => {
+            const value = props.value
+            return (
+                // Wrong: There is no need to specify the key here: 
+                // <li key={ value.toString() }>
+                //     { value }
+                // </li>
+
+                <li>
+                    { value }
+                </li>
+            )
+        }
+
+        // 基础列表组件
+        const NumberList = (props) => {
+            const numbers = props.numbers
+            // Wrong: The key should have been specified here:
+            // const listItems = numbers.map((number) => <NumberList value={ number } />)
+
+            const listItems = numbers.map((number) => 
+                // Correct: Key should be specified inside the array
+                <NumberList key={ number.toString() } value={ number } />
+            )
+
+            return (
+                <ul>{ listItems }</ul>
+            )
+        }
+
+        const numbers = [1, 2, 3, 4, 5, 6]
+        
+        ReactDOM.render(<NumberList numbers={ numbers } />, document.querySelector('#app'))
+
+    </script>
+</body>
+
+</html>

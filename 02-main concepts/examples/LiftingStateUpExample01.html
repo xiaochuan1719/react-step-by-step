@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Lifting State Up</title>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.min.js"></script>
+    <script type="text/babel">
+
+        // BoilingVerdidct 组件，接受 celius 温度作为一个 prop
+        const BoilingVerdict = (props) => {
+            if (props.celsius >= 100) {
+                return <p>The water would boil.</p>
+            } 
+            return <p>The water would not boil.</p>
+        }
+
+        // 创建名为 Calculator 组件，它渲染一个用于输入温度的 <input>, 
+        // 并将其值保存在 this.state.temperature 中
+        class Calculator extends React.Component {
+            constructor(props) {
+                super(props)
+                this.state = { temperature: '' } 
+                this.handleChange = this.handleChange.bind(this)
+            }
+
+            handleChange(e) {
+                this.setState({
+                    temperature: e.target.value
+                })
+            }
+
+            render() {
+                const temperature = this.state.temperature
+                return (
+                    <fieldset>
+                        <legend>Enter temperature in Celius:</legend>
+                        <input type="text" value={ temperature } onChange={ this.handleChange } />
+                        <BoilingVerdict celsius={ parseFloat(temperature) } />
+                    </fieldset>
+                )
+            }
+        }
+
+        ReactDOM.render(<Calculator />, document.querySelector('#app'))
+
+    </script>
+</body>
+
+</html>

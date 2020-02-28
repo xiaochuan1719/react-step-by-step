@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Composition vs Inheritance</title>
+  </head>
+
+  <body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.13.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.13.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.6/babel.min.js"></script>
+    <script type="text/babel">
+      // WelcomeDialog 可以说是 Dialog 的特殊实例
+      // 在 React 中，我们也可以通过组合来实现这一点。“特殊”组件可以通过 props 定制并渲染 “一般“ 组件
+      const FancyBorder = props => {
+        return <div className={"FancyBorder FancyBorder-" + props.color}>{props.children}</div>
+      }
+
+      const Dialog = (props) => {
+        return (
+          <FancyBorder color="blue">
+            <h1 className="Dialog-title">{ props.title }</h1>
+            <p className="Dialog-message">{ props.message }</p>
+          </FancyBorder>
+        )
+      }
+
+      const WelcomeDialog = () => {
+        return (
+          <Dialog title="Welcome" message="Thank you for visiting our spacecraft!" />
+        )
+      }
+
+      ReactDOM.render(<WelcomeDialog />, document.querySelector("#app"))
+    </script>
+  </body>
+</html>

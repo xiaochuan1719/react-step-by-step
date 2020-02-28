@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Conditional Rendering</title>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.min.js"></script>
+    <script type="text/babel">
+
+        const UserGreeting = (props) => {
+            return <h1>Welcom back!</h1>
+        }
+
+        const GuestGreeting = (props) => {
+            return <h1>Please sign up.</h1>
+        }
+
+        const Greeting = (props) => {
+            const isLoggedIn = props.isLoggedIn
+            if (isLoggedIn) {
+                return < UserGreeting />
+            }
+            return <GuestGreeting />
+        }
+
+        const LoginButton = (props) => {
+            return (
+                <button onClick={props.onClick} >
+                    Login
+                </button>
+            )
+        }
+
+        const LogoutButton = (props) => {
+            return (
+                <button onClick={props.onClick} >
+                    Logout
+                </button>
+            )
+        }
+
+        class LoginControl extends React.Component {
+            constructor(props) {
+                super(props)
+                this.state = { isLoggedIn: false }
+
+                this.handleLoginClick = this.handleLoginClick.bind(this)
+                this.handleLogoutClick = this.handleLogoutClick.bind(this)
+            }
+
+            handleLoginClick() {
+                this.setState({
+                    isLoggedIn: true
+                })
+            }
+
+            handleLogoutClick() {
+                this.setState({
+                    isLoggedIn: false
+                })
+            }
+
+            render() {
+                const isLoggedIn = this.state.isLoggedIn
+                return (
+                    <div>
+                        <h1>Hello, Nicholas</h1>
+                        <Greeting isLoggedIn={ isLoggedIn } />
+                        { isLoggedIn ? <LogoutButton onClick={ this.handleLogoutClick } /> : <LoginButton onClick={ this.handleLoginClick } /> }
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(<LoginControl />, document.querySelector('#app'))
+
+    </script>
+</body>
+
+</html>

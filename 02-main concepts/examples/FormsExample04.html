@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Forms</title>
+  </head>
+
+  <body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.min.js"></script>
+    <script type="text/babel">
+      // Handling Multiple Inputs
+      // 当需要处理多个 `input` 元素时，我们可以给每个元素添加 **`name`** 属性，
+      // 并让处理函数根据 `event.target.name` 的值选择要执行的操作
+      class Reservation extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            isGoing: true,
+            numberOfGuests: 2
+          };
+
+          this.handleInputChange = this.handleInputChange.bind(this)
+        }
+
+        handleInputChange(event) {
+          const target = event.target
+          const value = target.type === 'checkbox' ? target.checked : target.value
+          const name = target.name
+
+          // 使用 ES6 计算属性名称 的语法更新给定输入名称对应的 state 值
+          this.setState({
+            [name]: value
+          })
+
+          // 等同于
+          // const partialState = {}
+          // partialState[name] = value
+          // this.setState(partialState)
+        }
+
+        render() {
+          return (
+            <form>
+              <label>
+                参与：
+                <input 
+                  name="isGoing" 
+                  type="checkbox" 
+                  checked={this.state.isGoing} 
+                  onChange={this.handleInputChange} 
+                />
+              </label>
+              <br />
+              <label>
+                来宾人数：
+                <input
+                  name="numberOfGuests"
+                  type="number"
+                  value={this.state.numberOfGuests}
+                  onChange={this.handleInputChange}
+                />
+              </label>
+            </form>
+          );
+        }
+      }
+
+      ReactDOM.render(<Reservation />, document.querySelector("#app"));
+    </script>
+  </body>
+</html>

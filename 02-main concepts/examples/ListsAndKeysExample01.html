@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Lists and Keys</title>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.min.js"></script>
+    <script type="text/babel">
+
+        // arr.map(function(value, index, arr) { ... }) 函数
+        const numbers = [1, 2, 3, 4, 5, 6]
+        const doubled = numbers.map((number) => number * 2)
+        console.log(doubled)  
+        //  [ 2, 4, 6, 8, 10, 12 ]
+
+
+        // 渲染多个组件
+        // Warning: Each child in a list should have a unique "key" prop.
+        // const listItems = numbers.map((number) => <li>{ number }</li>)
+
+        const listItems = numbers.map((number, index) => <li key={ index }>{ number }</li>)
+        ReactDOM.render(<ul>{ listItems }</ul>, document.querySelector('#app'))
+
+    </script>
+</body>
+
+</html>

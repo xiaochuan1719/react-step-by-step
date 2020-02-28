@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Composition vs Inheritance</title>
+  </head>
+
+  <body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.13.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.13.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.6/babel.min.js"></script>
+    <script type="text/babel">
+      const SplitPane = props => {
+        return (
+          <div className="SplitPane">
+            <div className="SplitPane-left">{props.left}</div>
+            <div className="SplitPane-right">{props.right}</div>
+          </div>
+        )
+      }
+
+      const LeftPane = () => {
+        return <div>This is LeftPane</div>
+      }
+
+      const RightPane = () => {
+        return <div>This is RightPane</div>
+      }
+
+      const App = () => {
+        return <SplitPane left={<LeftPane />} right={<RightPane />} />
+      }
+
+      ReactDOM.render(<App />, document.querySelector("#app"))
+    </script>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Lists and Keys</title>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.4/babel.min.js"></script>
+    <script type="text/babel">
+
+        // 基础列表组件
+        const NumberList = (props) => {
+            const numbers = props.numbers
+
+            // key: 帮助 React 识别哪些元素改变了，因此应当给数组的每一个元素赋予一个确定的标识
+            // **一个元素的 key 最好是这个元素在列表中拥有的一个独一无二的字符串**，一般使用数据中的 ID 作为 key
+            // 通常没有确定 ID 的时候，才考虑使用元素的索引 index 作为 key
+            const listItems = numbers.map((number) => <li key={ number.toString() }>{ number }</li>)
+            return (
+                <ul>{ listItems }</ul>
+            )
+        }
+
+        const numbers = [1, 2, 3, 4, 5, 6]
+        
+        ReactDOM.render(<NumberList numbers={ numbers } />, document.querySelector('#app'))
+
+    </script>
+</body>
+
+</html>
