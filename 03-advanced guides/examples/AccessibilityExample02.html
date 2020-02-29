@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="app"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/react@16.13.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.13.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.6/babel.min.js"></script>
+    <script type="text/babel">
+        
+        // 父组件需要把焦点设置在其子组件的一个元素上
+        // 可以通过在子组件上设置一个特殊的 prop 来对父组件暴露 DOM refs 从而把父组件的 ref 传向子节点的 DOM 节点
+        const CustomTextInput = (props) => {
+            return (
+                <div>
+                    <input ref={ props.inputRef } />
+                    <button onClick={ props.buttonClick }>Click Me</button>
+                </div>
+            )
+        }
+
+        class Parent extends React.Component {
+            constructor(props) {
+                super(props)
+                this.inputElement = React.createRef()
+                this.handleClick = this.handleClick.bind(this)
+            }
+
+            handleClick() {
+                console.log('点击获取焦点')
+                this.inputElement.current.focus()
+            }
+
+            render() {
+                return (
+                    <CustomTextInput buttonClick={ this.handleClick } inputRef={ this.inputElement } />
+                )
+            }
+        }
+
+        ReactDOM.render(<Parent />, document.querySelector('#app'))
+
+    </script>
+
+</body>
+</html>

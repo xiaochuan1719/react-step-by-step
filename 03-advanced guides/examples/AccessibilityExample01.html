@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="app"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/react@16.13.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.13.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.6/babel.min.js"></script>
+    <script type="text/babel">
+        
+        // 使用程序管理焦点
+        class CustomTextInput extends React.Component {
+            constructor (props) {
+                super(props)
+                // 创造一个 textInput DOM 元素的 ref
+                this.textInput = React.createRef()
+                this.focus = this.focus.bind(this)
+            }
+
+            focus() {
+                console.log('点击获取input的焦点')
+                // 使用原始的 DOM API 显式地聚焦在 text input 上
+                // 注意：通过访问 `current` 来获得 DOM 节点
+                this.textInput.current.focus()
+            }
+
+            render() {
+                // 使用 `ref` 回调函数以在实例的一个变量中存储文本输入 DOM 元素
+                // `this.textInput`
+                return (
+                    <>
+                        <input type="text" ref={ this.textInput } />
+                        <button onClick={ this.focus }>Click Me</button>
+                    </>
+                )
+            }
+        }
+
+        ReactDOM.render(<CustomTextInput />, document.querySelector('#app'))
+
+    </script>
+
+</body>
+</html>
