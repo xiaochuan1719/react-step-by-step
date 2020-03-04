@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Context</title>
+</head>
+<body>
+
+    <div id="app"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/react@16.13.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.13.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.6/babel.min.js"></script>
+    <script type="text/babel">
+        
+        /**
+         * 何时使用 Context
+         *  Context 设计目的是为了共享那些对于一个组件树而言是全局的数据：例如当前认证的用户、主题或首选语言 
+         * 
+         * 使用 context, 避免通过中间元素传递 props 
+         *   Context 可以让我们无须明确地传遍每一个组件，就能将值深入传递进组件树
+         */
+
+         // 1. 为当前的 theme 创建一个 context ("light" 为默认值)
+        const ThemeContext = React.createContext('light')
+        
+        // 在 DevTools 中默认显示为 Context.Provider
+        ThemeContext.displayName = 'ThemeContext'
+
+        class ThemedButton extends React.Component {
+            // 4. 指定 contextType 读取当前的 theme context
+            // React 会往上找到最近的 theme Provider，然后使用它的值
+            // `static contextType = ThemeContext` 为 ES6 的 public class fields 语法，使用 static 类属性来初始化 contextType
+            // **挂载在 class 上的 contextType 属性会被重赋值为一个由 React.createContext() 创建的 Context 对象。
+            // 这使得可以使用 this.context 来消费最近 Context 上的那个值**
+            static contextType = ThemeContext
+            render() {
+                return <button theme={ this.context }>Primary Button</button>
+            } 
+        }
+
+        const ToolBar = (props) => {
+            // 3. 中间组件再也不必指明往下传递 theme
+            return (
+                <div>
+                    <ThemedButton />
+                </div>
+            )
+        }
+
+        class App extends React.Component {
+            // 2. 使用一个 Provier 来将当前的 theme 传递给以下的组件树
+            // 无论多深，任何组件都能读取这个值
+            // 本例将 “dark” 作为当前值传递下去
+            render() {
+                return (
+                    <ThemeContext.Provider value="dark">
+                        <ToolBar />
+                    </ThemeContext.Provider>
+                )
+            }
+        }
+
+        ReactDOM.render(<App />, document.querySelector('#app'))
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Context</title>
+</head>
+<body>
+
+    <div id="app"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/react@16.13.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.13.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.6/babel.min.js"></script>
+    <script type="text/babel">
+        
+        /**
+         * 何时使用 Context
+         *  Context 设计目的是为了共享那些对于一个组件树而言是全局的数据：例如当前认证的用户、主题或首选语言 
+         */
+        
+         // 将属性层层传递所有组件
+        class ThemedButton extends React.Component {
+            render() {
+                return <button theme={ this.props.theme }>Primary Button</button>
+            } 
+        }
+
+        const ToolBar = (props) => {
+            // ToolBar 组件接受一个额外的 theme 属性，然后传递给 ThemedButton 组件
+            // 如果应用中每个单独的按钮都需要知道 theme 的值，这回是件很麻烦的事情，
+            // 因为必须将这个值层层传递所有组件
+            return (
+                <div>
+                    <ThemedButton theme={ props.theme } />
+                </div>
+            )
+        }
+
+        class App extends React.Component {
+            render() {
+                return <ToolBar theme="dark" />
+            }
+        }
+
+        ReactDOM.render(<App />, document.querySelector('#app'))
+
+    </script>
+
+</body>
+</html>

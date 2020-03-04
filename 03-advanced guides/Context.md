@@ -131,7 +131,7 @@ const MyContext = React.createContext(defaultValue)
 
 创建一个 Context 对象。当 React 渲染一个订阅了这个 Context 对象的组件，这个组件会从组件树中离自身最近的那个匹配的 `Provider` 中读取到当前的 context 值。
 
-**只有**当组件所处的树中没有匹配 Provider 时，其 `defaultValue` 参数才会生效。这有助于在不使用 Provider 包装组件的情况下对组件进行测试。注意：将 `undefined` 传递给 Provider 的 value 时，消费组件的 `defaultValue` 不会生效。
+**只有**当组件所处的树中没有匹配 Provider 时，其 `defaultValue` 参数才会生效。这有助于在不使用 Provider 包装组件的情况下对组件进行测试。**注意：将 `undefined` 传递给 Provider 的 value 时，消费组件的 `defaultValue` 不会生效**。
 
 #### # Context.Provider 
 
@@ -194,3 +194,62 @@ class MyClass extends React.Component {
 
 #### # Context.Consumer
 
+```javascript
+<MyContext.Consumer>
+    { value => /* render something based on the context value */ }
+</MyContext.Consumer>
+```
+
+React 组件也可以订阅到 context 变更。这能让我们在**函数式组件**中完成订阅 context。
+
+这需要**函数作为子元素（function as a child）**这种做法。这个函数接收当前的 context 值，返回一个 React 节点。传递给函数的 `value` 值等同于往上组件树离这个 context 最近的 Provider 提供的 `value` 值。如果没有对应的 Provider，`value` 参数等同于传递给 `createContext()` 的 `defaultValue`。
+
+#### # Context.displayName
+
+context 对象接受一个名为 `displayName` 的 property，类型为字符串。React DevTools 使用该字符串来确定 context 要显示的内容。
+
+```javascript
+const MyContext = React.createContext(/* some value */)
+MyContext.displayName = 'MyDisplayName'
+
+<MyContext.Provider />  // "MyDisplayName.Provider" 在 DevTools 中
+<MyContext.Consuer />   // "MyDisplayName.Consumer" 在 DevTools 中
+```
+
+### # 示例
+
+#### # 动态 Context
+
+使用动态值（dynamic values）后更复杂的用法：
+
+```javascript
+// theme-context.js
+export const themes = {
+    light: {
+        foreground: '#000',
+        background: '#eee'
+    },
+    dark: {
+        foreground: '#fff',
+        background: '#222'
+    }
+}
+
+export const ThemeContext = React.createContext(themes.dark)  // 默认值为 themes.dark
+```
+
+```javascript
+// themed-button.js
+import { ThemeContext } from './theme-context'
+class ThemedButton extends React.Component {
+    render() {
+        let props = this.props
+        let theme = this.context
+        return (
+            <button {...props} style={{backgroundColor: theme.background}} />
+        )
+    }
+}
+ThemedButton.contextType = ThemeContext
+export default ThemedButton
+```
