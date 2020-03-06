@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Refs and the DOM</title>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.13.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.13.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.6/babel.min.js"></script>
+    <script type="text/babel">
+      /// 16.3之前版本的 React 使用回调函数形式的 refs
+
+      /// 为 class 组件添加 ref
+
+      /// 例二：包装 CustomTextInput，模拟它挂载之后立即被点击的操作
+      /// 使用 ref 来获取这个自定义的 input 组件并手动调用它的 focusTextInput 方法
+
+      class CustomTextInput extends React.Component {
+        constructor(props) {
+          super(props)
+          this.focusTextInput = this.focusTextInput.bind(this)
+        }
+
+        focusTextInput() {
+          this.textInput.focus()
+        }
+
+        render() {
+          // Use the `ref` callback to store a reference to the text input DOM
+          // element in an instance field (for example, this.textInput).
+          return (
+            <div>
+              <input type="text" ref={input => (this.textInput = input)} />
+              <input type="button" value="Focus the text input" onClick={this.focusTextInput} />
+            </div>
+          )
+        }
+      }
+
+      // 模拟它挂载之后立即被点击的操作
+      class AutoFocusTextInput extends React.Component {
+        constructor(props) {
+          super(props)
+          // this.textInput = React.createRef()
+        }
+
+        componentDidMount() {
+          console.log("node", this.textInput)
+          // 调用 CustomTextInput 实例的 focusTextInput 方法
+          // CustomTextInput 必须存在 focusTextInput 方法才行，否则报错：this.textInput.focusTextInput is not a function...
+          this.textInput.focusTextInput()
+        }
+
+        render() {
+          // 该 ref 回调函数会接收到一个挂载的组件实例作为参数
+          return <CustomTextInput ref={input => (this.textInput = input)} />
+        }
+      }
+
+      ReactDOM.render(<AutoFocusTextInput />, document.querySelector("#app"))
+    </script>
+  </body>
+</html>

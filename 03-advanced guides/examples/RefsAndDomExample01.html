@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Refs and the DOM</title>
+</head>
+<body>
+
+    <div id="app"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/react@16.13.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.13.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.6/babel.min.js"></script>
+    <script type="text/babel">
+        
+        /// 使用在 React 16.3 版本引入的 `React.createRef()` API 创建 Refs
+
+        class MyComponent extends React.Component {
+            constructor(props) {
+                super(props)
+                // 创建 Refs
+                this.myRef = React.createRef()
+            }
+
+            componentDidMount() {
+                console.log(this.myRef)
+                // 访问 Refs
+                const node = this.myRef.current
+                console.log('baseURI >>>', node.baseURI)
+                console.log('clientHeight >>>', node.clientHeight)
+                console.log('className >>>', node.className)
+                console.log('nodeName >>>', node.nodeName)
+                console.log('innerHTML >>>', node.innerHTML)
+                console.log('innerText >>>', node.innerText)
+            }
+
+            render() {
+                return <div className="refs" ref={ this.myRef } style={{height: 30 + 'px'}} ><span>Refs and the DOM</span></div>
+            }
+        }
+
+        ReactDOM.render(<MyComponent />, document.querySelector('#app'))
+
+    </script>
+
+</body>
+</html>

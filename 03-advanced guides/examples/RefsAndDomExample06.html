@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Refs and the DOM</title>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.13.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.13.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.6/babel.min.js"></script>
+    <script type="text/babel">
+      /// Refs 与 函数组件
+
+      /// 可以在函数组件内部使用 ref 属性，只要它指向一个 DOM 元素或者 class 组件
+
+      const CustomTextInput = (props) => {
+        // 这里必须声明 textInput，这样 ref 才可以引用它
+        let textInput = React.createRef()
+
+        const handleClick = () => {
+          textInput.current.focus()
+        }
+
+        return (
+          <div>
+            <input type="text" ref={textInput} />
+            <input type="button" value="Focus the text input" onClick={handleClick} />  
+          </div>
+        )
+      }
+
+      ReactDOM.render(<CustomTextInput />, document.querySelector("#app"))
+
+    </script>
+  </body>
+</html>

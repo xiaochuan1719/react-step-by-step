@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Refs and the DOM</title>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.13.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.13.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.6/babel.min.js"></script>
+    <script type="text/babel">
+      /// Callback Refs
+
+      /// 在 RefsAndDomExample04.html 示例中已展示 Callback Refs 的使用
+
+      class CustomTextInput extends React.Component {
+        constructor(props) {
+          super(props)
+          
+          this.textInput = null
+
+          this.setTextInputRef = element => {
+            this.textInput = element
+          }
+
+          this.focusTextInput = () => {
+            // Focus the text input using the raw DOM API
+            if (this.textInput) this.textInput.focus()
+          }
+        }
+
+        componentDidMount() {
+          // autofocus the input on mount
+          this.focusTextInput()
+        }
+
+        render() {
+          // Use the `ref` callback to store a reference to the text input DOM
+          // element in an instance field (for example, this.textInput).
+          return (
+            <div>
+              <input type="text" ref={ this.setTextInputRef } />
+              <input type="button" value="Focus the text input" onClick={ this.focusTextInput } />
+            </div>
+          )
+        }
+      }
+
+      ReactDOM.render(<CustomTextInput />, document.querySelector("#app"))
+
+    </script>
+  </body>
+</html>

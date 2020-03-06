@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Render Props</title>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@16.13.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16.13.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.8.6/babel.min.js"></script>
+    <script type="text/babel">
+      /// Use Render Props for Cross-Cutting Concerns
+
+      // 定义一个组件，跟踪 WEB 应用程序中的鼠标位置
+      class MouseTracker extends React.Component {
+        constructor(props) {
+          super(props)
+          this.state = {
+            x: 0,
+            y: 0
+          }
+          this.handleMouseMove = this.handleMouseMove.bind(this)
+        }
+
+        handleMouseMove(e) {
+          this.setState({
+            x: e.clientX,
+            y: e.clientY
+          })
+        }
+
+        render() {
+          return (
+            <div style={{ height: "100%" }} onMouseMove={this.handleMouseMove}>
+              <h1>移动鼠标</h1>
+              <p>
+                当前的鼠标位置是（{this.state.x}，{this.state.y}）
+              </p>
+            </div>
+          )
+        }
+      }
+
+      ReactDOM.render(<MouseTracker />, document.querySelector("#app"))
+    </script>
+  </body>
+</html>
